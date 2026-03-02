@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributor Portal — SurgeRoot</title>
+    <meta name="description"
+        content="Secure distributor portal for SurgeRoot partners. Access your dashboard, manage inventory, view orders, and download invoices.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/portal.css">
+    <link rel="canonical" href="https://surgeroot.com/portal.html">
+    <meta property="og:image" content="https://surgeroot.com/assets/images/og-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="header" role="banner">
+        <div class="header__inner">
+            <a href="/" class="header__logo" aria-label="SurgeRoot Home"><img src="/assets/images/logo.png"
+                    alt="SurgeRoot Logo" width="40" height="40">
+                <div class="header__brand-name"><span class="header__brand-text"><span class="surge">Surge</span><span
+                            class="root">Root</span></span><span class="header__brand-sub">Operated by MD AL AMIN
+                        LLC</span></div>
+            </a>
+            <nav class="header__nav" role="navigation" aria-label="Main navigation">
+                <button class="header__hamburger" aria-label="Toggle menu"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+                <div class="header__links">
+                    <a href="/">Home</a>
+                    <a href="/about.html">About</a>
+                    <a href="/how-we-work.html">How We Work</a>
+                    <a href="/brands.html">Brands</a>
+                    <a href="/resources.html">Resources</a>
+                    <a href="/blog/">Blog</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="header__actions">
+                    <a href="/portal.html" class="btn btn--secondary btn--sm active">Distributor Login</a>
+                    <a href="mailto:sales@surgeroot.com" class="btn btn--primary btn--sm">Contact Sales</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- LOGIN VIEW (shown when not logged in) -->
+        <div id="portal-login-view">
+            <section class="page-hero">
+                <div class="container">
+                    <nav class="breadcrumb" aria-label="Breadcrumb" style="color:rgba(255,255,255,0.6);">
+                        <a href="/" style="color:rgba(255,255,255,0.6);">Home</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__current" style="color:#fff;">Distributor Portal</span>
+                    </nav>
+                    <h1>Distributor Portal</h1>
+                    <p class="subhead" style="color:rgba(255,255,255,0.85);">Secure access for verified distribution
+                        partners.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="portal-login">
+                        <div class="portal-login__card">
+                            <h2 class="portal-login__title">Partner Login</h2>
+                            <p class="portal-login__subtitle">Enter your credentials to access the dashboard.</p>
+
+                            <div id="login-error" class="portal-alert portal-alert--error" style="display:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="15" y1="9" x2="9" y2="15" />
+                                    <line x1="9" y1="9" x2="15" y2="15" />
+                                </svg>
+                                <span id="login-error-text">Invalid credentials. Please try again.</span>
+                            </div>
+
+                            <form id="portal-login-form">
+                                <div class="form-group">
+                                    <label class="form-label" for="login-email">Email <span
+                                            class="required">*</span></label>
+                                    <input type="email" name="email" id="login-email" class="form-input"
+                                        placeholder="you@company.com" required autocomplete="email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="login-password">Password <span
+                                            class="required">*</span></label>
+                                    <div class="password-field">
+                                        <input type="password" name="password" id="login-password" class="form-input"
+                                            placeholder="Enter your password" required autocomplete="current-password">
+                                        <button type="button" class="password-toggle" aria-label="Toggle password">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
+                                    <label class="form-checkbox" style="margin:0;">
+                                        <input type="checkbox" id="remember-me"> <span
+                                            style="font-size:var(--text-sm);">Remember me</span>
+                                    </label>
+                                    <a href="mailto:info@surgeroot.com" style="font-size:var(--text-sm);">Forgot
+                                        password?</a>
+                                </div>
+                                <button type="submit" class="btn btn--primary" style="width:100%;">Sign In</button>
+                            </form>
+
+                            <p
+                                style="text-align:center;margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid var(--color-neutral-mid);font-size:var(--text-sm);color:var(--color-text-muted);">
+                                Not a partner yet? <a href="/contact.html?purpose=distributor">Apply for access</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PORTAL FEATURES PREVIEW -->
+            <section class="section section--light">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Portal Features</h2>
+                        <p class="subhead">Everything you need to manage your partnership with SurgeRoot.</p>
+                    </div>
+                    <div class="grid grid--3">
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <path d="M3 9h18" />
+                                <path d="M9 21V9" />
+                            </svg>
+                            <h3 class="card__title">Supplier Dashboard</h3>
+                            <p class="card__desc">Real-time overview of orders, inventory levels, and account status at
+                                a
+                                glance.</p>
+                        </div>
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="23 4 23 10 17 10" />
+                                <polyline points="1 20 1 14 7 14" />
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                            </svg>
+                            <h3 class="card__title">Inventory Sync</h3>
+                            <p class="card__desc">Live inventory tracking with automatic reorder alerts and stock level
+                                monitoring.</p>
+                        </div>
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                            <h3 class="card__title">Document Vault</h3>
+                            <p class="card__desc">Secure storage for W9s, resale certificates, invoices, and purchase
+                                orders.</p>
+                        </div>
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                                <path d="M16 10a4 4 0 0 1-8 0" />
+                            </svg>
+                            <h3 class="card__title">Order Management</h3>
+                            <p class="card__desc">Submit POs, track fulfillment status, and view order history with one
+                                click.</p>
+                        </div>
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <h3 class="card__title">Messaging</h3>
+                            <p class="card__desc">Direct communication with the SurgeRoot partnerships team inside the
+                                portal.</p>
+                        </div>
+                        <div class="card">
+                            <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <h3 class="card__title">Compliance Hub</h3>
+                            <p class="card__desc">MAP policy tracking, channel agreement status, and compliance
+                                documentation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- DASHBOARD VIEW (shown when logged in) -->
+        <div id="portal-dashboard-view" style="display:none;">
+
+            <!-- Dashboard Topbar -->
+            <div class="portal-topbar">
+                <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+                    <div>
+                        <span class="portal-topbar__welcome">Welcome back, <strong
+                                id="portal-user-name">Partner</strong></span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:var(--space-4);">
+                        <span class="portal-topbar__status">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
+                            Verified Partner
+                        </span>
+                        <button class="btn btn--secondary btn--sm" id="portal-logout-btn">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <section class="portal-dashboard">
+                <div class="container">
+
+                    <!-- Stats Row -->
+                    <div class="portal-stats">
+                        <div class="portal-stat">
+                            <div class="portal-stat__label">Active Orders</div>
+                            <div class="portal-stat__value" id="stat-orders">3</div>
+                            <div class="portal-stat__change portal-stat__change--up">↑ 2 this week</div>
+                        </div>
+                        <div class="portal-stat">
+                            <div class="portal-stat__label">Inventory Items</div>
+                            <div class="portal-stat__value" id="stat-inventory">147</div>
+                            <div class="portal-stat__change">Synced 2 min ago</div>
+                        </div>
+                        <div class="portal-stat">
+                            <div class="portal-stat__label">Documents</div>
+                            <div class="portal-stat__value" id="stat-docs">12</div>
+                            <div class="portal-stat__change portal-stat__change--up">All verified</div>
+                        </div>
+                        <div class="portal-stat">
+                            <div class="portal-stat__label">Compliance Score</div>
+                            <div class="portal-stat__value portal-stat__value--accent" id="stat-compliance">100%</div>
+                            <div class="portal-stat__change portal-stat__change--up">MAP compliant</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Tabs -->
+                    <div class="portal-tabs">
+                        <button class="portal-tab active" data-portal-tab="overview">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg>
+                            Overview
+                        </button>
+                        <button class="portal-tab" data-portal-tab="inventory">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <polyline points="23 4 23 10 17 10" />
+                                <polyline points="1 20 1 14 7 14" />
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                            </svg>
+                            Inventory
+                        </button>
+                        <button class="portal-tab" data-portal-tab="orders">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                            </svg>
+                            Orders
+                        </button>
+                        <button class="portal-tab" data-portal-tab="documents">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                            Documents
+                        </button>
+                        <button class="portal-tab" data-portal-tab="messages">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            Messages
+                            <span class="portal-tab__badge">2</span>
+                        </button>
+                    </div>
+
+                    <!-- TAB PANELS -->
+
+                    <!-- Overview Panel -->
+                    <div class="portal-panel active" id="panel-overview">
+                        <div class="grid grid--2" style="gap:var(--space-6);">
+                            <div class="portal-card">
+                                <h3 class="portal-card__title">Recent Orders</h3>
+                                <div class="portal-table-wrap">
+                                    <table class="portal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>PO #</th>
+                                                <th>Date</th>
+                                                <th>Items</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>PO-2026-0047</td>
+                                                <td>Feb 28</td>
+                                                <td>24 units</td>
+                                                <td><span class="portal-badge portal-badge--success">Shipped</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>PO-2026-0046</td>
+                                                <td>Feb 25</td>
+                                                <td>18 units</td>
+                                                <td><span class="portal-badge portal-badge--info">Processing</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>PO-2026-0045</td>
+                                                <td>Feb 20</td>
+                                                <td>36 units</td>
+                                                <td><span class="portal-badge portal-badge--success">Delivered</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="portal-card">
+                                <h3 class="portal-card__title">Inventory Alerts</h3>
+                                <div class="portal-alerts-list">
+                                    <div class="portal-alert-item portal-alert-item--warning">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="18" height="18">
+                                            <path
+                                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                            <line x1="12" y1="9" x2="12" y2="13" />
+                                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                                        </svg>
+                                        <div>
+                                            <strong>Low Stock:</strong> Home & Kitchen — Blender Set (12 remaining)
+                                        </div>
+                                    </div>
+                                    <div class="portal-alert-item portal-alert-item--info">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="18" height="18">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="12" y1="16" x2="12" y2="12" />
+                                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                                        </svg>
+                                        <div>
+                                            <strong>Reorder Suggested:</strong> Health & Personal Care — Vitamin D (28
+                                            remaining)
+                                        </div>
+                                    </div>
+                                    <div class="portal-alert-item portal-alert-item--success">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="18" height="18">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <polyline points="22 4 12 14.01 9 11.01" />
+                                        </svg>
+                                        <div>
+                                            <strong>Shipment received:</strong> PO-2026-0045 — 36 units checked in
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Panel -->
+                    <div class="portal-panel" id="panel-inventory">
+                        <div class="portal-card">
+                            <div
+                                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
+                                <h3 class="portal-card__title" style="margin-bottom:0;">Inventory Sync</h3>
+                                <div style="display:flex;gap:var(--space-3);align-items:center;">
+                                    <span style="font-size:var(--text-xs);color:var(--color-text-muted);">Last sync: 2
+                                        min
+                                        ago</span>
+                                    <button class="btn btn--primary btn--sm" id="sync-inventory-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <polyline points="23 4 23 10 17 10" />
+                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                        </svg>
+                                        Sync Now
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="portal-table-wrap">
+                                <table class="portal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Product</th>
+                                            <th>Category</th>
+                                            <th>On Hand</th>
+                                            <th>Reserved</th>
+                                            <th>Available</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SR-HK-1001</td>
+                                            <td>Premium Blender Set</td>
+                                            <td>Home & Kitchen</td>
+                                            <td>12</td>
+                                            <td>4</td>
+                                            <td>8</td>
+                                            <td><span class="portal-badge portal-badge--warning">Low Stock</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>SR-HP-2034</td>
+                                            <td>Vitamin D3 5000 IU</td>
+                                            <td>Health & Personal Care</td>
+                                            <td>28</td>
+                                            <td>6</td>
+                                            <td>22</td>
+                                            <td><span class="portal-badge portal-badge--info">Reorder Soon</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>SR-TH-3012</td>
+                                            <td>Cordless Drill Kit</td>
+                                            <td>Tools & Hardware</td>
+                                            <td>45</td>
+                                            <td>10</td>
+                                            <td>35</td>
+                                            <td><span class="portal-badge portal-badge--success">In Stock</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>SR-OJ-4021</td>
+                                            <td>Document Shredder</td>
+                                            <td>Office & Janitorial</td>
+                                            <td>62</td>
+                                            <td>8</td>
+                                            <td>54</td>
+                                            <td><span class="portal-badge portal-badge--success">In Stock</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Panel -->
+                    <div class="portal-panel" id="panel-orders">
+                        <div class="portal-card">
+                            <div
+                                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
+                                <h3 class="portal-card__title" style="margin-bottom:0;">Order History</h3>
+                                <button class="btn btn--primary btn--sm" id="new-order-btn">+ New Purchase
+                                    Order</button>
+                            </div>
+                            <div class="portal-table-wrap">
+                                <table class="portal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>PO Number</th>
+                                            <th>Date</th>
+                                            <th>Items</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                            <th>Invoice</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>PO-2026-0047</td>
+                                            <td>Feb 28, 2026</td>
+                                            <td>24 units</td>
+                                            <td>$2,460.00</td>
+                                            <td><span class="portal-badge portal-badge--success">Shipped</span></td>
+                                            <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PO-2026-0046</td>
+                                            <td>Feb 25, 2026</td>
+                                            <td>18 units</td>
+                                            <td>$1,890.00</td>
+                                            <td><span class="portal-badge portal-badge--info">Processing</span></td>
+                                            <td><span style="color:var(--color-text-muted);">Pending</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PO-2026-0045</td>
+                                            <td>Feb 20, 2026</td>
+                                            <td>36 units</td>
+                                            <td>$4,320.00</td>
+                                            <td><span class="portal-badge portal-badge--success">Delivered</span></td>
+                                            <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PO-2026-0044</td>
+                                            <td>Feb 14, 2026</td>
+                                            <td>12 units</td>
+                                            <td>$1,080.00</td>
+                                            <td><span class="portal-badge portal-badge--success">Delivered</span></td>
+                                            <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents Panel -->
+                    <div class="portal-panel" id="panel-documents">
+                        <div class="portal-card">
+                            <h3 class="portal-card__title">Document Vault</h3>
+                            <div class="portal-docs-grid">
+                                <div class="portal-doc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="32" height="32">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                    <div>
+                                        <strong>W9 Form</strong>
+                                        <span class="portal-doc__meta">Uploaded Jan 15, 2026 · PDF</span>
+                                    </div>
+                                    <span class="portal-badge portal-badge--success">Verified</span>
+                                </div>
+                                <div class="portal-doc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="32" height="32">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                    <div>
+                                        <strong>Resale Certificate (WY)</strong>
+                                        <span class="portal-doc__meta">Uploaded Jan 15, 2026 · PDF</span>
+                                    </div>
+                                    <span class="portal-badge portal-badge--success">Verified</span>
+                                </div>
+                                <div class="portal-doc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="32" height="32">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                    <div>
+                                        <strong>Reseller Agreement</strong>
+                                        <span class="portal-doc__meta">Uploaded Feb 01, 2026 · PDF</span>
+                                    </div>
+                                    <span class="portal-badge portal-badge--success">Active</span>
+                                </div>
+                                <div class="portal-doc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="32" height="32">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                    <div>
+                                        <strong>Invoice PO-2026-0047</strong>
+                                        <span class="portal-doc__meta">Generated Feb 28, 2026 · PDF</span>
+                                    </div>
+                                    <a href="#" class="btn btn--tertiary btn--sm">Download</a>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary btn--sm" style="margin-top:var(--space-6);">+ Upload
+                                Document</button>
+                        </div>
+                    </div>
+
+                    <!-- Messages Panel -->
+                    <div class="portal-panel" id="panel-messages">
+                        <div class="portal-card">
+                            <h3 class="portal-card__title">Messages</h3>
+                            <div class="portal-messages-list">
+                                <div class="portal-message portal-message--unread">
+                                    <div class="portal-message__avatar">SR</div>
+                                    <div class="portal-message__content">
+                                        <div class="portal-message__header">
+                                            <strong>SurgeRoot Partnerships</strong>
+                                            <span class="portal-message__time">Today, 2:30 PM</span>
+                                        </div>
+                                        <p>Your order PO-2026-0047 has been shipped. Tracking details are now available
+                                            in
+                                            your orders tab.</p>
+                                    </div>
+                                </div>
+                                <div class="portal-message portal-message--unread">
+                                    <div class="portal-message__avatar">SR</div>
+                                    <div class="portal-message__content">
+                                        <div class="portal-message__header">
+                                            <strong>SurgeRoot Compliance</strong>
+                                            <span class="portal-message__time">Yesterday</span>
+                                        </div>
+                                        <p>Reminder: Your resale certificate expires in 60 days. Please upload a renewed
+                                            copy when available.</p>
+                                    </div>
+                                </div>
+                                <div class="portal-message">
+                                    <div class="portal-message__avatar">SR</div>
+                                    <div class="portal-message__content">
+                                        <div class="portal-message__header">
+                                            <strong>SurgeRoot Partnerships</strong>
+                                            <span class="portal-message__time">Feb 25</span>
+                                        </div>
+                                        <p>Welcome to the SurgeRoot distributor portal! Your account has been verified
+                                            and
+                                            you now have full access.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portal-compose" style="margin-top:var(--space-6);">
+                                <textarea class="form-textarea" rows="3"
+                                    placeholder="Type a message to the SurgeRoot team..."></textarea>
+                                <button class="btn btn--primary btn--sm" style="margin-top:var(--space-3);">Send
+                                    Message</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <p class="footer__brand-name"><span style="color:#fff">Surge</span><span
+                            style="color:#00A79D">Root</span></p>
+                    <p class="footer__positioning">SurgeRoot is a US-based retail partner operated by MD AL AMIN LLC, a
+                        Wyoming limited liability company. We purchase through authorized distribution channels and
+                        responsibly represent brands across major online marketplaces.</p>
+                    <p style="font-size:var(--text-sm);color:rgba(255,255,255,0.6);">30 N Gould St Ste R<br>Sheridan, WY
+                        82801<br>+1 (267) 215-3134</p>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Company</h4>
+                    <div class="footer__links"><a href="/about.html">About</a><a href="/how-we-work.html">How We
+                            Work</a><a href="/brands.html">Brands</a><a href="/contact.html">Contact</a></div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Resources</h4>
+                    <div class="footer__links"><a href="/resources.html">Resources & FAQ</a><a href="/blog/">Blog</a><a
+                            href="/portal.html">Distributor Portal</a></div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Contact</h4>
+                    <div class="footer__links"><a href="mailto:sales@surgeroot.com">sales@surgeroot.com</a><a
+                            href="mailto:info@surgeroot.com">info@surgeroot.com</a><a href="tel:+12672153134">+1 (267)
+                            215-3134</a></div>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright">&copy; 2026 MD AL AMIN LLC dba SurgeRoot. All rights reserved.</p>
+                <div class="footer__legal-links"><a href="/legal/privacy.html">Privacy Policy</a><a
+                        href="/legal/terms.html">Terms of Use</a><a href="/legal/cookies.html">Cookies</a><a
+                        href="/legal/accessibility.html">Accessibility</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cookie-banner" role="alert">
+        <div class="cookie-banner__inner">
+            <p class="cookie-banner__text">We use cookies to improve your experience. <a
+                    href="/legal/cookies.html">Cookie Policy</a>.</p>
+            <div class="cookie-banner__actions"><button class="btn btn--primary btn--sm"
+                    data-cookie-accept>Accept</button><button class="btn btn--secondary btn--sm" data-cookie-decline
+                    style="color:white;border-color:rgba(255,255,255,0.4);">Decline</button></div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/portal.js"></script>
+    <script type="module" src="/js/analytics.js"></script>
+</body>
+
+</html>
