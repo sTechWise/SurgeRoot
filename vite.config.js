@@ -18,6 +18,7 @@ export default defineConfig({
         terms: resolve(__dirname, 'legal/terms.html'),
         cookies: resolve(__dirname, 'legal/cookies.html'),
         accessibility: resolve(__dirname, 'legal/accessibility.html'),
+        onboardingChecklist: resolve(__dirname, 'assets/downloads/distributor-onboarding-checklist.html'),
       },
     },
     outDir: 'dist',
