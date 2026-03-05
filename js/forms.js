@@ -6,6 +6,34 @@
 const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 const WEB3FORMS_KEY = '6b31127f-eebd-476a-aaa2-b604a7c8dc3c';
 
+// Rate limiting - prevent spam submissions
+const RATE_LIMIT_MS = 30000; // 30 seconds cooldown
+let lastSubmitTime = 0;
+
+function isRateLimited() {
+    const now = Date.now();
+    if (now - lastSubmitTime < RATE_LIMIT_MS) return true;
+    lastSubmitTime = now;
+    return false;
+}
+
+// Honeypot bot protection - bots fill hidden fields, humans don't
+function injectHoneypot(form) {
+    if (form.querySelector('[name="botcheck"]')) return;
+    const honey = document.createElement('input');
+    honey.type = 'text';
+    honey.name = 'botcheck';
+    honey.style.cssText = 'position:absolute;left:-9999px;opacity:0;height:0;width:0;';
+    honey.tabIndex = -1;
+    honey.autocomplete = 'off';
+    form.appendChild(honey);
+}
+
+function isBotSubmission(form) {
+    const honey = form.querySelector('[name="botcheck"]');
+    return honey && honey.value.length > 0;
+}
+
 // Email domain validation
 function isValidEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -114,9 +142,12 @@ async function submitToWeb3Forms(formData, formSubject) {
 function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
+    injectHoneypot(form);
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (isBotSubmission(form)) return;
+        if (isRateLimited()) { alert('Please wait before submitting again.'); return; }
         clearAllErrors(form);
 
         let valid = true;
@@ -183,6 +214,7 @@ function initContactForm() {
 function initDistributorForm() {
     const form = document.getElementById('distributor-form');
     if (!form) return;
+    injectHoneypot(form);
 
     const step1 = form.querySelector('#step-1');
     const step2 = form.querySelector('#step-2');
@@ -266,6 +298,8 @@ function initDistributorForm() {
     // Submit
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (isBotSubmission(form)) return;
+        if (isRateLimited()) { alert('Please wait before submitting again.'); return; }
         clearAllErrors(form);
         let valid = true;
 
@@ -331,9 +365,12 @@ function initDistributorForm() {
 function initModalForm() {
     const form = document.getElementById('modal-contact-form');
     if (!form) return;
+    injectHoneypot(form);
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (isBotSubmission(form)) return;
+        if (isRateLimited()) { alert('Please wait before submitting again.'); return; }
         clearAllErrors(form);
         let valid = true;
 

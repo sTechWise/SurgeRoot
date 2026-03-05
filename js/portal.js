@@ -1,79 +1,173 @@
 /**
  * SurgeRoot Distributor Portal
- * Login system, dashboard tabs, inventory sync
+ * supabaseClient.auth — Passwordless OTP (Email Code) Login
  */
 
-// Demo credentials (in production, this would be server-side auth)
-const DEMO_ACCOUNTS = [
-    { email: 'partner@surgeroot.com', password: 'SurgeRoot2026!', name: 'Partner Account' },
-    { email: 'demo@surgeroot.com', password: 'demo123', name: 'Demo Distributor' },
-    { email: 'admin@surgeroot.com', password: 'admin2026', name: 'MD AL AMIN' }
-];
+// Supabase configuration
+const SUPABASE_URL = 'https://ganrxuyamblwchzeoghm.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_nw0PvgFh30mZXCrtTtOJpw_YG06n3wj';
 
-const SESSION_KEY = 'surgeroot_portal_session';
+let supabaseClient;
+let pendingEmail = ''; // Stores email between OTP steps
 
-// ---- INIT ----
-document.addEventListener('DOMContentLoaded', () => {
-    checkSession();
-    initLogin();
-    initTabs();
-    initLogout();
-    initPasswordToggle();
-    initInventorySync();
-});
+// Initialize Supabase client
+function initSupabase() {
+    if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        return true;
+    }
+    return false;
+}
+
 
 // ---- SESSION MANAGEMENT ----
-function checkSession() {
-    const session = JSON.parse(localStorage.getItem(SESSION_KEY));
-    if (session && session.email) {
-        showDashboard(session);
-    } else {
+async function checkSession() {
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) {
+            showDashboard({
+                email: session.user.email,
+                name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+            });
+        } else {
+            showLogin();
+        }
+    } catch (err) {
         showLogin();
     }
 }
 
-function createSession(account) {
-    const session = {
-        email: account.email,
-        name: account.name,
-        loginTime: new Date().toISOString(),
-        token: generateToken()
-    };
-    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-    return session;
-}
-
-function destroySession() {
-    localStorage.removeItem(SESSION_KEY);
-}
-
-function generateToken() {
-    return 'sr_' + Math.random().toString(36).substr(2, 16) + Date.now().toString(36);
-}
-
-// ---- LOGIN ----
-function initLogin() {
-    const form = document.getElementById('portal-login-form');
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value.trim().toLowerCase();
-        const password = document.getElementById('login-password').value;
-
-        const account = DEMO_ACCOUNTS.find(a => a.email === email && a.password === password);
-
-        if (account) {
-            const session = createSession(account);
-            hideLoginError();
-            showDashboard(session);
-        } else {
-            showLoginError('Invalid email or password. Please try again.');
+function setupAuthListener() {
+    if (!supabaseClient) return;
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_OUT' || !session) {
+            showLogin();
+        } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            showDashboard({
+                email: session.user.email,
+                name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+            });
         }
     });
 }
 
-function showLoginError(msg) {
+// ---- STEP 1: EMAIL → SEND OTP ----
+function initLoginForm() {
+    const form = document.getElementById('portal-login-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+        hideSuccess();
+
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        if (!email) {
+            showError('Please enter your email address.');
+            return;
+        }
+
+        const submitBtn = form.querySelector('[type="submit"]');
+        setButtonLoading(submitBtn, true, 'Sending code…');
+
+        try {
+            if (!supabaseClient) throw new Error('Authentication service unavailable.');
+
+            const { error } = await supabaseClient.auth.signInWithOtp({
+                email,
+                options: {
+                    shouldCreateUser: false, // Only existing/whitelisted users
+                },
+            });
+
+            if (error) {
+                // Supabase returns "Signups not allowed" for non-existing users
+                if (error.message.includes('Signups not allowed') || error.message.includes('not allowed')) {
+                    showError('This email is not registered for portal access. Please contact us at sales@surgeroot.com to apply.');
+                } else {
+                    showError(error.message || 'Something went wrong. Please try again.');
+                }
+                return;
+            }
+
+            // Success — move to OTP step
+            pendingEmail = email;
+            document.getElementById('otp-sent-email').textContent = email;
+            form.style.display = 'none';
+            document.getElementById('portal-otp-form').style.display = '';
+            showSuccess('Verification code sent! Check your email inbox.');
+
+        } catch (err) {
+            showError(err.message || 'Something went wrong. Please try again.');
+        } finally {
+            setButtonLoading(submitBtn, false, 'Send Login Code');
+        }
+    });
+}
+
+// ---- STEP 2: VERIFY OTP CODE ----
+function initOtpForm() {
+    const form = document.getElementById('portal-otp-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+        hideSuccess();
+
+        const otp = document.getElementById('login-otp').value.trim();
+        if (!otp || otp.length !== 6) {
+            showError('Please enter the 6-digit verification code from your email.');
+            return;
+        }
+
+        const submitBtn = form.querySelector('[type="submit"]');
+        setButtonLoading(submitBtn, true, 'Verifying…');
+
+        try {
+            if (!supabaseClient) throw new Error('Authentication service unavailable.');
+
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+                email: pendingEmail,
+                token: otp,
+                type: 'email',
+            });
+
+            if (error) {
+                showError('Invalid or expired code. Please check and try again.');
+                return;
+            }
+
+            if (data.session) {
+                hideError();
+                showDashboard({
+                    email: data.user.email,
+                    name: data.user.user_metadata?.full_name || data.user.email.split('@')[0],
+                });
+            }
+        } catch (err) {
+            showError(err.message || 'Verification failed. Please try again.');
+        } finally {
+            setButtonLoading(submitBtn, false, 'Verify & Sign In');
+        }
+    });
+}
+
+// ---- OTP BACK BUTTON ----
+function initOtpBackBtn() {
+    const btn = document.getElementById('otp-back-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        document.getElementById('portal-otp-form').style.display = 'none';
+        document.getElementById('portal-login-form').style.display = '';
+        hideError();
+        hideSuccess();
+        pendingEmail = '';
+    });
+}
+
+// ---- UI HELPERS ----
+function showError(msg) {
     const el = document.getElementById('login-error');
     const textEl = document.getElementById('login-error-text');
     if (el && textEl) {
@@ -82,11 +176,39 @@ function showLoginError(msg) {
         el.classList.add('shake');
         setTimeout(() => el.classList.remove('shake'), 600);
     }
+    hideSuccess();
 }
 
-function hideLoginError() {
+function hideError() {
     const el = document.getElementById('login-error');
     if (el) el.style.display = 'none';
+}
+
+function showSuccess(msg) {
+    const el = document.getElementById('login-success');
+    const textEl = document.getElementById('login-success-text');
+    if (el && textEl) {
+        textEl.textContent = msg;
+        el.style.display = 'flex';
+    }
+}
+
+function hideSuccess() {
+    const el = document.getElementById('login-success');
+    if (el) el.style.display = 'none';
+}
+
+function setButtonLoading(btn, loading, defaultText) {
+    if (!btn) return;
+    if (loading) {
+        btn.disabled = true;
+        btn.textContent = defaultText || 'Loading…';
+        btn.style.opacity = '0.7';
+    } else {
+        btn.disabled = false;
+        btn.textContent = defaultText || 'Submit';
+        btn.style.opacity = '';
+    }
 }
 
 // ---- VIEW SWITCHING ----
@@ -95,29 +217,52 @@ function showLogin() {
     const dashView = document.getElementById('portal-dashboard-view');
     if (loginView) loginView.style.display = '';
     if (dashView) dashView.style.display = 'none';
+
+    // Update header utility buttons
+    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal.html"], .header__actions-mobile a[href="/portal.html"], .header__actions a[href="#"], .header__actions-mobile a[href="#"]');
+    headerLinks.forEach(link => {
+        link.textContent = 'Distributor Login';
+        link.href = '/portal.html';
+    });
+
+    // Reset to email step
+    const emailForm = document.getElementById('portal-login-form');
+    const otpForm = document.getElementById('portal-otp-form');
+    if (emailForm) emailForm.style.display = '';
+    if (otpForm) otpForm.style.display = 'none';
 }
 
-function showDashboard(session) {
+function showDashboard(user) {
     const loginView = document.getElementById('portal-login-view');
     const dashView = document.getElementById('portal-dashboard-view');
     if (loginView) loginView.style.display = 'none';
     if (dashView) dashView.style.display = '';
 
-    // Update user name
+    // Update header utility buttons
+    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal.html"], .header__actions-mobile a[href="/portal.html"]');
+    headerLinks.forEach(link => {
+        link.textContent = 'Dashboard';
+        link.href = '#';
+    });
+
     const nameEl = document.getElementById('portal-user-name');
-    if (nameEl) nameEl.textContent = session.name;
+    if (nameEl) nameEl.textContent = user.name || user.email;
 }
 
 // ---- LOGOUT ----
 function initLogout() {
     const btn = document.getElementById('portal-logout-btn');
     if (!btn) return;
-    btn.addEventListener('click', () => {
-        destroySession();
+    btn.addEventListener('click', async () => {
+        if (supabaseClient) {
+            await supabaseClient.auth.signOut();
+        }
         showLogin();
-        // Reset form
         const form = document.getElementById('portal-login-form');
         if (form) form.reset();
+        const otpForm = document.getElementById('portal-otp-form');
+        if (otpForm) otpForm.reset();
+        pendingEmail = '';
     });
 }
 
@@ -127,12 +272,8 @@ function initTabs() {
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const target = tab.getAttribute('data-portal-tab');
-
-            // Update active tab
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-
-            // Update active panel
             document.querySelectorAll('.portal-panel').forEach(p => p.classList.remove('active'));
             const panel = document.getElementById(`panel-${target}`);
             if (panel) panel.classList.add('active');
@@ -140,41 +281,44 @@ function initTabs() {
     });
 }
 
-// ---- PASSWORD TOGGLE ----
-function initPasswordToggle() {
-    const toggle = document.querySelector('.password-toggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', () => {
-        const input = document.getElementById('login-password');
-        if (input.type === 'password') {
-            input.type = 'text';
-            toggle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
-        } else {
-            input.type = 'password';
-            toggle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
-        }
-    });
+// ---- INVENTORY SYNC ----
+function createSyncSvg(cls) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('width', '16');
+    svg.setAttribute('height', '16');
+    if (cls) svg.setAttribute('class', cls);
+    const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    polyline.setAttribute('points', '23 4 23 10 17 10');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M20.49 15a9 9 0 1 1-2.12-9.36L23 10');
+    svg.appendChild(polyline);
+    svg.appendChild(path);
+    return svg;
 }
 
-// ---- INVENTORY SYNC ----
 function initInventorySync() {
     const btn = document.getElementById('sync-inventory-btn');
     if (!btn) return;
 
     btn.addEventListener('click', () => {
         btn.disabled = true;
-        btn.innerHTML = '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Syncing...';
+        btn.textContent = '';
+        btn.appendChild(createSyncSvg('spin'));
+        btn.appendChild(document.createTextNode(' Syncing...'));
 
-        // Simulate sync
         setTimeout(() => {
             btn.disabled = false;
-            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Sync Now';
+            btn.textContent = '';
+            btn.appendChild(createSyncSvg());
+            btn.appendChild(document.createTextNode(' Sync Now'));
 
-            // Update sync timestamp
-            const timestamp = btn.closest('.portal-card').querySelector('[class=""]') || btn.parentElement.querySelector('span');
+            const timestamp = btn.closest('.portal-card')?.querySelector('span');
             if (timestamp) timestamp.textContent = 'Last sync: just now';
 
-            // Show brief success feedback
             const card = btn.closest('.portal-card');
             if (card) {
                 card.style.borderColor = 'var(--color-accent)';
@@ -184,7 +328,7 @@ function initInventorySync() {
     });
 }
 
-// Add spin animation
+// Add animations
 const style = document.createElement('style');
 style.textContent = `
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -197,3 +341,24 @@ style.textContent = `
     .shake { animation: shake 0.4s ease; }
 `;
 document.head.appendChild(style);
+
+// ---- INIT (must be at bottom, after all function definitions) ----
+initLoginForm();
+initOtpForm();
+initOtpBackBtn();
+initTabs();
+initLogout();
+initInventorySync();
+
+// Async Supabase work
+(async function () {
+    const supabaseReady = initSupabase();
+    if (supabaseReady) {
+        await checkSession();
+        setupAuthListener();
+    } else {
+        showLogin();
+        showError('Authentication service is temporarily unavailable. Please try again later.');
+    }
+})();
+

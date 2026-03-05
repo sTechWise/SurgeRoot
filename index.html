@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SurgeRoot — Compliance-Driven Retail Partner for Authorized Distribution</title>
+  <title>SurgeRoot - Compliance-Driven Retail Partner for Authorized Distribution</title>
   <meta name="description"
-    content="SurgeRoot is a US-based retail partner operated by MD AL AMIN LLC, a Wyoming limited liability company. We purchase through authorized distribution channels and responsibly represent brands across major online marketplaces.">
+    content="SurgeRoot is a US-based retail partner operated by MD AL AMIN LLC, a Wyoming limited liability company.">
   <meta property="og:title" content="SurgeRoot — Professional Retail Partnership for Brands and Distributors">
   <meta property="og:description"
     content="US-based authorized retail partner. Sourcing exclusively from verified distributors with MAP compliance and full traceability.">
@@ -27,6 +27,17 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/pages.css">
+
+  <!-- Sentry Error Tracking -->
+  <script src="https://browser.sentry-cdn.com/8.5.0/bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+    if (window.Sentry) {
+      Sentry.init({
+        dsn: "https://d86841751992b8ab32b74b3b2dcc8f9a@o4510988798001152.ingest.us.sentry.io/4510988809797632",
+      });
+    }
+  </script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -76,6 +87,10 @@
           <a href="/resources.html">Resources</a>
           <a href="/blog/">Blog</a>
           <a href="/contact.html">Contact</a>
+          <div class="header__actions-mobile">
+            <a href="mailto:sales@surgeroot.com" class="btn btn--primary btn--sm">Contact Sales</a>
+            <a href="/portal.html" class="btn btn--secondary btn--sm">Distributor Login</a>
+          </div>
         </div>
         <div class="header__actions">
           <a href="/portal.html" class="btn btn--secondary btn--sm">Distributor Login</a>
@@ -107,11 +122,14 @@
       </div>
       <div class="hero__overlay"></div>
       <div class="container">
-        <h1>SurgeRoot — Compliance-Driven Retail Partner for Authorized Distribution</h1>
+        <h1>SurgeRoot — U.S. Based Retail Partner<br>
+          Sourcing Exclusively Through<br>
+          Authorized Distributors</h1>
 
-        <p class="hero__subtitle">We are MD AL AMIN LLC, a US-based retail partner. We source exclusively from
-          authorized distributors and
-          responsibly represent brands across leading marketplaces.</p>
+        <p class="hero__subtitle">
+          We support long-term brand value through disciplined pricing practices, verified supply channels,
+          and documented inventory integrity.
+        </p>
         <div class="btn-group">
           <a href="mailto:sales@surgeroot.com" class="btn btn--primary btn--lg btn--full-mobile">Contact Sales</a>
           <a href="/portal.html" class="btn btn--secondary btn--lg btn--full-mobile">Distributor Login</a>
@@ -123,8 +141,7 @@
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               <path d="M9 12l2 2 4-4" />
             </svg>
-            <span class="trust-bullet__text">Authorized sourcing exclusively through verified US distributors. Full
-              invoice documentation available upon request.</span>
+            <span class="trust-bullet__text">Full invoice documentation available upon request.</span>
           </div>
           <div class="trust-bullet">
             <svg class="trust-bullet__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -191,12 +208,11 @@
             </ul>
             <div class="btn-group">
               <button class="btn btn--primary btn--full-mobile" data-modal-open="references-modal"
-                data-modal-prefill="Distributor References Request"
-                onclick="if(window.trackSupplyChainEvent)trackSupplyChainEvent('home_references')">Request Distributor
+                data-modal-prefill="Distributor References Request" data-analytics-action="home_references">Request
+                Distributor
                 References</button>
               <a href="/assets/downloads/distributor-onboarding-checklist.html"
-                class="btn btn--secondary btn--full-mobile"
-                onclick="if(window.trackSupplyChainEvent)trackSupplyChainEvent('download_checklist')">Download
+                class="btn btn--secondary btn--full-mobile" data-analytics-action="download_checklist">Download
                 Checklist</a>
             </div>
             <p class="legal-text" style="margin-top: var(--space-6);">We do not publish brand logos without written
@@ -249,16 +265,18 @@
     <section class="section verification-proof" id="verification-proof">
       <div class="container">
         <div class="section-header">
-          <h2>Proof of Authorized Distribution</h2>
-          <p class="subhead">Transparency builds trust. Here's how we verify every transaction.</p>
+          <h2>Documentation and Compliance Standards</h2>
+          <p class="subhead">Our documentation framework ensures full traceability and compliance for every purchase.
+          </p>
         </div>
         <div class="verification-proof__grid">
           <div class="verification-proof__invoice">
-            <img src="/assets/images/sample-invoice-redacted.png"
+            <img src="/assets/images/doc-example.png"
               alt="Redacted distributor invoice showing purchase of branded units. Full invoice documentation available upon request."
               loading="lazy" width="1200" height="800" class="verification-proof__img">
-            <p class="legal-text" style="margin-top: var(--space-3); text-align: center;">Sample — Full documentation
-              available to verified partners upon request.</p>
+            <p class="legal-text" style="margin-top: var(--space-3); text-align: center;">Complete invoice copies are
+              available to verified partners
+              upon request.</p>
           </div>
           <div class="verification-proof__checklist">
             <div class="verification-step">
@@ -270,9 +288,8 @@
               </div>
               <div class="verification-step__content">
                 <h3>Distributor Verification</h3>
-                <p>Every supplier is vetted. We maintain active accounts only with US-authorized distributors who
-                  provide
-                  verifiable credentials.</p>
+                <p>All inventory is sourced from authorized US distribution accounts and backed by supplier-issued
+                  invoices.</p>
               </div>
             </div>
             <div class="verification-step">
@@ -299,7 +316,7 @@
                 </svg>
               </div>
               <div class="verification-step__content">
-                <h3>MAP & Channel Compliance</h3>
+                <h3>MAP and Channel Compliance</h3>
                 <p>We respect brand pricing, channel policies, and resale territory agreements. Compliance documentation
                   is maintained for every brand.</p>
               </div>
@@ -313,8 +330,17 @@
     </section>
 
     <!-- 3-COLUMN EXPLAINER -->
-    <section class="section">
-      <div class="container">
+    <section class="section section--dark" style="position: relative; overflow: hidden;">
+      <div class="section-slider">
+        <div class="section-slider__slide"
+          style="background-image: url('assets/images/bg_sourcing.png'); animation-delay: 0s;"></div>
+        <div class="section-slider__slide"
+          style="background-image: url('assets/images/bg_compliance.png'); animation-delay: 5s;"></div>
+        <div class="section-slider__slide"
+          style="background-image: url('assets/images/bg_fast_reorders.png'); animation-delay: 10s;"></div>
+        <div class="section-slider__overlay"></div>
+      </div>
+      <div class="container" style="position: relative; z-index: 2;">
         <div class="section-header">
           <h2>How We Deliver Value</h2>
           <p class="subhead">A streamlined process built for brands and distributors who demand reliability.</p>
@@ -361,58 +387,59 @@
           <p class="subhead">We operate across multiple product verticals, always sourcing through verified channels.
           </p>
         </div>
-        <div class="category-tiles">
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            <span>Home & Kitchen</span>
+        <div class="brand-categories">
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-home-kitchen.png"
+              alt="Home and Kitchen products sourced through verified distribution channels" loading="lazy" width="800"
+              height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Home & Kitchen</span>
+              <span class="brand-tile__desc">Appliances, cookware, storage & organization</span>
+            </div>
           </div>
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span>Health & Personal Care</span>
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-health-care.png"
+              alt="Health and Personal Care products sourced through authorized US distributors" loading="lazy"
+              width="800" height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Health & Personal Care</span>
+              <span class="brand-tile__desc">Supplements, wellness, personal hygiene</span>
+            </div>
           </div>
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-            </svg>
-            <span>Tools & Hardware</span>
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-tools-hardware.png"
+              alt="Tools and Hardware products from authorized distribution partners" loading="lazy" width="800"
+              height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Tools & Hardware</span>
+              <span class="brand-tile__desc">Power tools, hand tools, safety equipment</span>
+            </div>
           </div>
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-              <line x1="8" y1="21" x2="16" y2="21" />
-              <line x1="12" y1="17" x2="12" y2="21" />
-            </svg>
-            <span>Office & Janitorial</span>
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-office-janitorial.png"
+              alt="Office and Janitorial supplies sourced through verified channels" loading="lazy" width="800"
+              height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Office & Janitorial</span>
+              <span class="brand-tile__desc">Shredders, cleaning, desk organization</span>
+            </div>
           </div>
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-              <line x1="9" y1="9" x2="9.01" y2="9" />
-              <line x1="15" y1="9" x2="15.01" y2="9" />
-            </svg>
-            <span>Pet Supplies</span>
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-pet-supplies.png"
+              alt="Pet Supplies from authorized distribution networks" loading="lazy" width="800" height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Pet Supplies</span>
+              <span class="brand-tile__desc">Food, accessories, grooming, health</span>
+            </div>
           </div>
-          <div class="category-tile">
-            <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            <span>Household Essentials</span>
+          <div class="brand-tile">
+            <img class="brand-tile__img" src="/assets/images/cat-household.png"
+              alt="Household Essentials sourced through authorized US distributors" loading="lazy" width="800"
+              height="600">
+            <div class="brand-tile__overlay">
+              <span class="brand-tile__name">Household Essentials</span>
+              <span class="brand-tile__desc">Cleaning, laundry, storage, disposables</span>
+            </div>
           </div>
         </div>
       </div>
@@ -450,6 +477,8 @@
         <div class="modal__body">
           <form id="modal-contact-form">
             <input type="hidden" name="subject" value="Distributor References Request">
+            <!-- Web3Forms Honeypot Spam Protection -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
             <div class="form-group">
               <label class="form-label" for="modal-name">Full Name <span class="required">*</span></label>
               <input type="text" name="fullname" id="modal-name" class="form-input" required>
@@ -495,9 +524,7 @@
           <p class="footer__brand-name"><span style="color:#fff">Surge</span><span style="color:#00A79D">Root</span>
           </p>
           <p class="footer__positioning">SurgeRoot is a US-based retail partner operated by MD AL AMIN LLC, a Wyoming
-            limited liability company. We purchase
-            through authorized distribution channels and responsibly represent brands across major online
-            marketplaces.
+            limited liability company.
           </p>
           <p style="font-size: var(--text-sm); color: rgba(255,255,255,0.6);">30 N Gould St Ste R<br>Sheridan, WY
             82801<br>+1 (267) 215-3134</p>
@@ -529,7 +556,7 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <p class="footer__copyright">&copy; 2026 MD AL AMIN LLC dba SurgeRoot. All rights reserved.</p>
+        <p class="footer__copyright">&copy; 2026 SurgeRoot. All rights reserved.</p>
         <div class="footer__legal-links">
           <a href="/legal/privacy.html">Privacy Policy</a>
           <a href="/legal/terms.html">Terms of Use</a>

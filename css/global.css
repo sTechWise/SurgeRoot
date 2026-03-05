@@ -18,6 +18,7 @@
     text-decoration: none;
     transition: top 0.2s ease;
 }
+
 .skip-to-content:focus {
     top: var(--space-3);
 }
@@ -118,9 +119,17 @@ strong {
 }
 
 .section--dark h2,
-.section--dark h3,
-.section--dark p {
+.section--dark h3:not(.card__title),
+.section--dark p:not(.card__desc) {
     color: var(--color-white);
+}
+
+.section--dark .card__title {
+    color: var(--color-primary);
+}
+
+.section--dark .card__desc {
+    color: var(--color-text-light);
 }
 
 /* Grid */

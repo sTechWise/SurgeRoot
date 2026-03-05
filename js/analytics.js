@@ -1,23 +1,13 @@
 /* ============================================
-   SurgeRoot Analytics (GA4 + GTM Placeholders)
+   SurgeRoot Analytics (GA4 + GTM Integration)
    ============================================ */
 
-/*
- * SETUP INSTRUCTIONS:
- * 1. Replace 'G-XXXXXXXXXX' with your GA4 Measurement ID
- * 2. Replace 'GTM-XXXXXXX' with your Google Tag Manager ID
- * 3. These will only activate after cookie consent is given
- */
-
 const GA4_ID = 'G-0C1NW7N2LF'; // GA4 Measurement ID
-const GTM_ID = 'GTM-XXXXXXX'; // TODO: Replace with your GTM ID (optional)
+const GTM_ID = 'GTM-566W72F3';
 
 // Initialize GA4
 function initGA4() {
-    if (!GA4_ID || GA4_ID === 'G-XXXXXXXXXX') {
-        console.log('[SurgeRoot Analytics] GA4 not configured. Replace GA4_ID in analytics.js');
-        return;
-    }
+    if (!GA4_ID || GA4_ID === 'G-XXXXXXXXXX') return;
 
     const script = document.createElement('script');
     script.async = true;
@@ -33,10 +23,7 @@ function initGA4() {
 
 // Initialize GTM
 function initGTM() {
-    if (GTM_ID === 'GTM-XXXXXXX') {
-        console.log('[SurgeRoot Analytics] GTM not configured. Replace GTM_ID in analytics.js');
-        return;
-    }
+    if (!GTM_ID || GTM_ID === 'GTM-XXXXXXX') return;
 
     window.dataLayer = window.dataLayer || [];
     (function (w, d, s, l, i) {
@@ -49,6 +36,17 @@ function initGTM() {
         j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', GTM_ID);
+
+    // Div wrap for noscript compliant insertion
+    const noscript = document.createElement('noscript');
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.googletagmanager.com/ns.html?id=${GTM_ID}`;
+    iframe.height = "0";
+    iframe.width = "0";
+    iframe.style.display = "none";
+    iframe.style.visibility = "hidden";
+    noscript.appendChild(iframe);
+    document.body.insertBefore(noscript, document.body.firstChild);
 }
 
 // Track custom events
@@ -65,7 +63,7 @@ window.trackEvent = function (eventName, params = {}) {
         ...params
     });
 
-    console.log(`[SurgeRoot Analytics] Event: ${eventName}`, params);
+
 };
 
 // Supply chain specific events
@@ -79,6 +77,17 @@ window.trackSupplyChainEvent = function (action) {
     const eventName = eventMap[action] || action;
     window.trackEvent(eventName, { section: 'supply_chain' });
 };
+
+// Bind analytics clicks cleanly for CSP
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-analytics-action]').forEach(el => {
+        el.addEventListener('click', () => {
+            if (window.trackSupplyChainEvent) {
+                window.trackSupplyChainEvent(el.getAttribute('data-analytics-action'));
+            }
+        });
+    });
+});
 
 // Initialize analytics (called after cookie consent)
 window.initAnalytics = function () {

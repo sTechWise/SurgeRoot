@@ -20,12 +20,17 @@
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/portal.css">
     <link rel="canonical" href="https://surgeroot.com/portal.html">
+
+    <meta property="og:title" content="Distributor Portal — SurgeRoot">
     <meta property="og:image" content="https://surgeroot.com/assets/images/og-preview.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) --><noscript><iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-566W72F3" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
     <!-- HEADER -->
@@ -48,6 +53,10 @@
                     <a href="/resources.html">Resources</a>
                     <a href="/blog/">Blog</a>
                     <a href="/contact.html">Contact</a>
+                    <div class="header__actions-mobile">
+                        <a href="mailto:sales@surgeroot.com" class="btn btn--primary btn--sm">Contact Sales</a>
+                        <a href="/portal.html" class="btn btn--secondary btn--sm">Distributor Login</a>
+                    </div>
                 </div>
                 <div class="header__actions">
                     <a href="/portal.html" class="btn btn--secondary btn--sm active">Distributor Login</a>
@@ -62,10 +71,10 @@
         <div id="portal-login-view">
             <section class="page-hero">
                 <div class="container">
-                    <nav class="breadcrumb" aria-label="Breadcrumb" style="color:rgba(255,255,255,0.6);">
-                        <a href="/" style="color:rgba(255,255,255,0.6);">Home</a>
+                    <nav class="breadcrumb" aria-label="Breadcrumb">
+                        <a href="/">Home</a>
                         <span class="breadcrumb__separator">›</span>
-                        <span class="breadcrumb__current" style="color:#fff;">Distributor Portal</span>
+                        <span class="breadcrumb__current">Distributor Portal</span>
                     </nav>
                     <h1>Distributor Portal</h1>
                     <p class="subhead" style="color:rgba(255,255,255,0.85);">Secure access for verified distribution
@@ -73,12 +82,13 @@
                 </div>
             </section>
 
+            <!-- PORTAL LOGIN VIEW -->
             <section class="section">
                 <div class="container">
                     <div class="portal-login">
                         <div class="portal-login__card">
                             <h2 class="portal-login__title">Partner Login</h2>
-                            <p class="portal-login__subtitle">Enter your credentials to access the dashboard.</p>
+                            <p class="portal-login__subtitle">Enter your registered email to receive a login code.</p>
 
                             <div id="login-error" class="portal-alert portal-alert--error" style="display:none;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -86,40 +96,47 @@
                                     <line x1="15" y1="9" x2="9" y2="15" />
                                     <line x1="9" y1="9" x2="15" y2="15" />
                                 </svg>
-                                <span id="login-error-text">Invalid credentials. Please try again.</span>
+                                <span id="login-error-text">Something went wrong. Please try again.</span>
                             </div>
 
-                            <form id="portal-login-form">
+                            <div id="login-success" class="portal-alert portal-alert--success" style="display:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                <span id="login-success-text">Verification code sent! Check your email.</span>
+                            </div>
+
+                            <!-- Step 1: Email -->
+                            <form id="portal-login-form" action="javascript:void(0)">
                                 <div class="form-group">
                                     <label class="form-label" for="login-email">Email <span
                                             class="required">*</span></label>
                                     <input type="email" name="email" id="login-email" class="form-input"
                                         placeholder="you@company.com" required autocomplete="email">
                                 </div>
+                                <button type="submit" class="btn btn--primary" style="width:100%;">Send Login
+                                    Code</button>
+                            </form>
+
+                            <!-- Step 2: OTP Verification -->
+                            <form id="portal-otp-form" action="javascript:void(0)" style="display:none;">
+                                <p
+                                    style="font-size:var(--text-sm);color:var(--color-text-light);margin-bottom:var(--space-4);">
+                                    A verification code was sent to <strong id="otp-sent-email"></strong>
+                                </p>
                                 <div class="form-group">
-                                    <label class="form-label" for="login-password">Password <span
+                                    <label class="form-label" for="login-otp">Verification Code <span
                                             class="required">*</span></label>
-                                    <div class="password-field">
-                                        <input type="password" name="password" id="login-password" class="form-input"
-                                            placeholder="Enter your password" required autocomplete="current-password">
-                                        <button type="button" class="password-toggle" aria-label="Toggle password">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                                <circle cx="12" cy="12" r="3" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                    <input type="text" name="otp" id="login-otp" class="form-input"
+                                        placeholder="Enter your code" required maxlength="6" pattern="[0-9]{6}"
+                                        inputmode="numeric" autocomplete="one-time-code"
+                                        style="letter-spacing:0.3em;font-size:var(--text-xl);text-align:center;">
                                 </div>
-                                <div
-                                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
-                                    <label class="form-checkbox" style="margin:0;">
-                                        <input type="checkbox" id="remember-me"> <span
-                                            style="font-size:var(--text-sm);">Remember me</span>
-                                    </label>
-                                    <a href="mailto:info@surgeroot.com" style="font-size:var(--text-sm);">Forgot
-                                        password?</a>
-                                </div>
-                                <button type="submit" class="btn btn--primary" style="width:100%;">Sign In</button>
+                                <button type="submit" class="btn btn--primary" style="width:100%;">Verify &amp; Sign
+                                    In</button>
+                                <button type="button" id="otp-back-btn" class="btn btn--secondary"
+                                    style="width:100%;margin-top:var(--space-3);">&#8592; Back to Email</button>
                             </form>
 
                             <p
@@ -130,6 +147,8 @@
                     </div>
                 </div>
             </section>
+
+
 
             <!-- PORTAL FEATURES PREVIEW -->
             <section class="section section--light">
@@ -147,7 +166,8 @@
                                 <path d="M9 21V9" />
                             </svg>
                             <h3 class="card__title">Supplier Dashboard</h3>
-                            <p class="card__desc">Real-time overview of orders, inventory levels, and account status at
+                            <p class="card__desc">Real-time overview of orders, inventory levels, and account
+                                status at
                                 a
                                 glance.</p>
                         </div>
@@ -159,7 +179,8 @@
                                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
                             </svg>
                             <h3 class="card__title">Inventory Sync</h3>
-                            <p class="card__desc">Live inventory tracking with automatic reorder alerts and stock level
+                            <p class="card__desc">Live inventory tracking with automatic reorder alerts and
+                                stock level
                                 monitoring.</p>
                         </div>
                         <div class="card">
@@ -171,7 +192,8 @@
                                 <line x1="16" y1="17" x2="8" y2="17" />
                             </svg>
                             <h3 class="card__title">Document Vault</h3>
-                            <p class="card__desc">Secure storage for W9s, resale certificates, invoices, and purchase
+                            <p class="card__desc">Secure storage for W9s, resale certificates, invoices, and
+                                purchase
                                 orders.</p>
                         </div>
                         <div class="card">
@@ -182,7 +204,8 @@
                                 <path d="M16 10a4 4 0 0 1-8 0" />
                             </svg>
                             <h3 class="card__title">Order Management</h3>
-                            <p class="card__desc">Submit POs, track fulfillment status, and view order history with one
+                            <p class="card__desc">Submit POs, track fulfillment status, and view order history
+                                with one
                                 click.</p>
                         </div>
                         <div class="card">
@@ -191,7 +214,8 @@
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                             </svg>
                             <h3 class="card__title">Messaging</h3>
-                            <p class="card__desc">Direct communication with the SurgeRoot partnerships team inside the
+                            <p class="card__desc">Direct communication with the SurgeRoot partnerships team
+                                inside the
                                 portal.</p>
                         </div>
                         <div class="card">
@@ -228,7 +252,8 @@
                             </svg>
                             Verified Partner
                         </span>
-                        <button class="btn btn--secondary btn--sm" id="portal-logout-btn">Sign Out</button>
+                        <button class="btn btn--secondary btn--sm" id="portal-logout-btn"
+                            style="color:white;border-color:rgba(255,255,255,0.4);">Sign Out</button>
                     </div>
                 </div>
             </div>
@@ -256,7 +281,8 @@
                         </div>
                         <div class="portal-stat">
                             <div class="portal-stat__label">Compliance Score</div>
-                            <div class="portal-stat__value portal-stat__value--accent" id="stat-compliance">100%</div>
+                            <div class="portal-stat__value portal-stat__value--accent" id="stat-compliance">100%
+                            </div>
                             <div class="portal-stat__change portal-stat__change--up">MAP compliant</div>
                         </div>
                     </div>
@@ -330,13 +356,15 @@
                                                 <td>PO-2026-0047</td>
                                                 <td>Feb 28</td>
                                                 <td>24 units</td>
-                                                <td><span class="portal-badge portal-badge--success">Shipped</span></td>
+                                                <td><span class="portal-badge portal-badge--success">Shipped</span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>PO-2026-0046</td>
                                                 <td>Feb 25</td>
                                                 <td>18 units</td>
-                                                <td><span class="portal-badge portal-badge--info">Processing</span></td>
+                                                <td><span class="portal-badge portal-badge--info">Processing</span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>PO-2026-0045</td>
@@ -361,7 +389,8 @@
                                             <line x1="12" y1="17" x2="12.01" y2="17" />
                                         </svg>
                                         <div>
-                                            <strong>Low Stock:</strong> Home & Kitchen — Blender Set (12 remaining)
+                                            <strong>Low Stock:</strong> Home & Kitchen — Blender Set (12
+                                            remaining)
                                         </div>
                                     </div>
                                     <div class="portal-alert-item portal-alert-item--info">
@@ -372,7 +401,8 @@
                                             <line x1="12" y1="8" x2="12.01" y2="8" />
                                         </svg>
                                         <div>
-                                            <strong>Reorder Suggested:</strong> Health & Personal Care — Vitamin D (28
+                                            <strong>Reorder Suggested:</strong> Health & Personal Care — Vitamin
+                                            D (28
                                             remaining)
                                         </div>
                                     </div>
@@ -383,7 +413,8 @@
                                             <polyline points="22 4 12 14.01 9 11.01" />
                                         </svg>
                                         <div>
-                                            <strong>Shipment received:</strong> PO-2026-0045 — 36 units checked in
+                                            <strong>Shipment received:</strong> PO-2026-0045 — 36 units checked
+                                            in
                                         </div>
                                     </div>
                                 </div>
@@ -398,7 +429,8 @@
                                 style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
                                 <h3 class="portal-card__title" style="margin-bottom:0;">Inventory Sync</h3>
                                 <div style="display:flex;gap:var(--space-3);align-items:center;">
-                                    <span style="font-size:var(--text-xs);color:var(--color-text-muted);">Last sync: 2
+                                    <span style="font-size:var(--text-xs);color:var(--color-text-muted);">Last
+                                        sync: 2
                                         min
                                         ago</span>
                                     <button class="btn btn--primary btn--sm" id="sync-inventory-btn">
@@ -432,7 +464,8 @@
                                             <td>12</td>
                                             <td>4</td>
                                             <td>8</td>
-                                            <td><span class="portal-badge portal-badge--warning">Low Stock</span></td>
+                                            <td><span class="portal-badge portal-badge--warning">Low
+                                                    Stock</span></td>
                                         </tr>
                                         <tr>
                                             <td>SR-HP-2034</td>
@@ -441,7 +474,8 @@
                                             <td>28</td>
                                             <td>6</td>
                                             <td>22</td>
-                                            <td><span class="portal-badge portal-badge--info">Reorder Soon</span></td>
+                                            <td><span class="portal-badge portal-badge--info">Reorder
+                                                    Soon</span></td>
                                         </tr>
                                         <tr>
                                             <td>SR-TH-3012</td>
@@ -450,7 +484,8 @@
                                             <td>45</td>
                                             <td>10</td>
                                             <td>35</td>
-                                            <td><span class="portal-badge portal-badge--success">In Stock</span></td>
+                                            <td><span class="portal-badge portal-badge--success">In Stock</span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>SR-OJ-4021</td>
@@ -459,7 +494,8 @@
                                             <td>62</td>
                                             <td>8</td>
                                             <td>54</td>
-                                            <td><span class="portal-badge portal-badge--success">In Stock</span></td>
+                                            <td><span class="portal-badge portal-badge--success">In Stock</span>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -494,7 +530,8 @@
                                             <td>Feb 28, 2026</td>
                                             <td>24 units</td>
                                             <td>$2,460.00</td>
-                                            <td><span class="portal-badge portal-badge--success">Shipped</span></td>
+                                            <td><span class="portal-badge portal-badge--success">Shipped</span>
+                                            </td>
                                             <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
                                         </tr>
                                         <tr>
@@ -502,7 +539,8 @@
                                             <td>Feb 25, 2026</td>
                                             <td>18 units</td>
                                             <td>$1,890.00</td>
-                                            <td><span class="portal-badge portal-badge--info">Processing</span></td>
+                                            <td><span class="portal-badge portal-badge--info">Processing</span>
+                                            </td>
                                             <td><span style="color:var(--color-text-muted);">Pending</span></td>
                                         </tr>
                                         <tr>
@@ -510,7 +548,8 @@
                                             <td>Feb 20, 2026</td>
                                             <td>36 units</td>
                                             <td>$4,320.00</td>
-                                            <td><span class="portal-badge portal-badge--success">Delivered</span></td>
+                                            <td><span class="portal-badge portal-badge--success">Delivered</span>
+                                            </td>
                                             <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
                                         </tr>
                                         <tr>
@@ -518,7 +557,8 @@
                                             <td>Feb 14, 2026</td>
                                             <td>12 units</td>
                                             <td>$1,080.00</td>
-                                            <td><span class="portal-badge portal-badge--success">Delivered</span></td>
+                                            <td><span class="portal-badge portal-badge--success">Delivered</span>
+                                            </td>
                                             <td><a href="#" class="btn btn--tertiary btn--sm">↓ PDF</a></td>
                                         </tr>
                                     </tbody>
@@ -581,7 +621,8 @@
                                     <a href="#" class="btn btn--tertiary btn--sm">Download</a>
                                 </div>
                             </div>
-                            <button class="btn btn--secondary btn--sm" style="margin-top:var(--space-6);">+ Upload
+                            <button class="btn btn--secondary btn--sm" style="margin-top:var(--space-6);">+
+                                Upload
                                 Document</button>
                         </div>
                     </div>
@@ -598,7 +639,8 @@
                                             <strong>SurgeRoot Partnerships</strong>
                                             <span class="portal-message__time">Today, 2:30 PM</span>
                                         </div>
-                                        <p>Your order PO-2026-0047 has been shipped. Tracking details are now available
+                                        <p>Your order PO-2026-0047 has been shipped. Tracking details are now
+                                            available
                                             in
                                             your orders tab.</p>
                                     </div>
@@ -610,7 +652,8 @@
                                             <strong>SurgeRoot Compliance</strong>
                                             <span class="portal-message__time">Yesterday</span>
                                         </div>
-                                        <p>Reminder: Your resale certificate expires in 60 days. Please upload a renewed
+                                        <p>Reminder: Your resale certificate expires in 60 days. Please upload a
+                                            renewed
                                             copy when available.</p>
                                     </div>
                                 </div>
@@ -621,7 +664,8 @@
                                             <strong>SurgeRoot Partnerships</strong>
                                             <span class="portal-message__time">Feb 25</span>
                                         </div>
-                                        <p>Welcome to the SurgeRoot distributor portal! Your account has been verified
+                                        <p>Welcome to the SurgeRoot distributor portal! Your account has been
+                                            verified
                                             and
                                             you now have full access.</p>
                                     </div>
@@ -650,8 +694,7 @@
                     <p class="footer__brand-name"><span style="color:#fff">Surge</span><span
                             style="color:#00A79D">Root</span></p>
                     <p class="footer__positioning">SurgeRoot is a US-based retail partner operated by MD AL AMIN LLC, a
-                        Wyoming limited liability company. We purchase through authorized distribution channels and
-                        responsibly represent brands across major online marketplaces.</p>
+                        Wyoming limited liability company.</p>
                     <p style="font-size:var(--text-sm);color:rgba(255,255,255,0.6);">30 N Gould St Ste R<br>Sheridan, WY
                         82801<br>+1 (267) 215-3134</p>
                 </div>
@@ -673,7 +716,7 @@
                 </div>
             </div>
             <div class="footer__bottom">
-                <p class="footer__copyright">&copy; 2026 MD AL AMIN LLC dba SurgeRoot. All rights reserved.</p>
+                <p class="footer__copyright">&copy; 2026 SurgeRoot. All rights reserved.</p>
                 <div class="footer__legal-links"><a href="/legal/privacy.html">Privacy Policy</a><a
                         href="/legal/terms.html">Terms of Use</a><a href="/legal/cookies.html">Cookies</a><a
                         href="/legal/accessibility.html">Accessibility</a></div>
@@ -692,7 +735,10 @@
     </div>
 
     <script type="module" src="/js/main.js"></script>
-    <script type="module" src="/js/portal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1"
+        integrity="sha384-Sm2s7OXxsAMTyJ4iIyRBgVpeGUvMPk2lRQnnZhE78Wej7oggIoolKt+SCt0XJbUB"
+        crossorigin="anonymous"></script>
+    <script src="/js/portal.js"></script>
     <script type="module" src="/js/analytics.js"></script>
 </body>
 

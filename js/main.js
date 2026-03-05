@@ -168,7 +168,7 @@ function initFormTabs() {
 // Active nav link
 function initActiveNav() {
     const currentPath = window.location.pathname.replace(/\/$/, '').replace(/\.html$/, '');
-    document.querySelectorAll('.header__links a').forEach(link => {
+    document.querySelectorAll('.header__links a:not(.btn)').forEach(link => {
         const linkPath = new URL(link.href).pathname.replace(/\/$/, '').replace(/\.html$/, '');
         if (currentPath === linkPath || (currentPath === '' && linkPath === '/') || (currentPath === '/' && linkPath === '/')) {
             link.classList.add('active');
