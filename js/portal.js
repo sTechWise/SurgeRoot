@@ -219,10 +219,10 @@ function showLogin() {
     if (dashView) dashView.style.display = 'none';
 
     // Update header utility buttons
-    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal.html"], .header__actions-mobile a[href="/portal.html"], .header__actions a[href="#"], .header__actions-mobile a[href="#"]');
+    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal"], .header__actions-mobile a[href="/portal"], .header__actions a[href="#"], .header__actions-mobile a[href="#"]');
     headerLinks.forEach(link => {
         link.textContent = 'Distributor Login';
-        link.href = '/portal.html';
+        link.href = '/portal';
     });
 
     // Reset to email step
@@ -239,7 +239,7 @@ function showDashboard(user) {
     if (dashView) dashView.style.display = '';
 
     // Update header utility buttons
-    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal.html"], .header__actions-mobile a[href="/portal.html"]');
+    const headerLinks = document.querySelectorAll('.header__actions a[href="/portal"], .header__actions-mobile a[href="/portal"]');
     headerLinks.forEach(link => {
         link.textContent = 'Dashboard';
         link.href = '#';
@@ -349,6 +349,11 @@ initOtpBackBtn();
 initTabs();
 initLogout();
 initInventorySync();
+
+// Demo download buttons (replaces inline onclick for CSP compliance)
+document.querySelectorAll('.portal-download-demo').forEach(btn => {
+    btn.addEventListener('click', () => alert('Sample download initiated.'));
+});
 
 // Async Supabase work
 (async function () {

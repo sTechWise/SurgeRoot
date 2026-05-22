@@ -8,18 +8,14 @@
     <title>Distributor Portal — SurgeRoot</title>
     <meta name="description"
         content="Secure distributor portal for SurgeRoot partners. Access your dashboard, manage inventory, view orders, and download invoices.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="/css/fonts.css">
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/portal.css">
-    <link rel="canonical" href="https://surgeroot.com/portal.html">
+    <link rel="canonical" href="https://surgeroot.com/portal">
 
     <meta property="og:title" content="Distributor Portal — SurgeRoot">
     <meta property="og:image" content="https://surgeroot.com/assets/images/og-preview.png">
@@ -533,8 +529,7 @@
                                             <td><span class="portal-badge portal-badge--success">Shipped</span>
                                             </td>
                                             <td><a href="javascript:void(0)"
-                                                    onclick="alert('Sample download initiated.')"
-                                                    class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                                    class="btn btn--tertiary btn--sm portal-download-demo">↓ PDF</a></td>
                                         </tr>
                                         <tr>
                                             <td>PO-2026-0046</td>
@@ -553,8 +548,7 @@
                                             <td><span class="portal-badge portal-badge--success">Delivered</span>
                                             </td>
                                             <td><a href="javascript:void(0)"
-                                                    onclick="alert('Sample download initiated.')"
-                                                    class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                                    class="btn btn--tertiary btn--sm portal-download-demo">↓ PDF</a></td>
                                         </tr>
                                         <tr>
                                             <td>PO-2026-0044</td>
@@ -564,8 +558,7 @@
                                             <td><span class="portal-badge portal-badge--success">Delivered</span>
                                             </td>
                                             <td><a href="javascript:void(0)"
-                                                    onclick="alert('Sample download initiated.')"
-                                                    class="btn btn--tertiary btn--sm">↓ PDF</a></td>
+                                                    class="btn btn--tertiary btn--sm portal-download-demo">↓ PDF</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -624,8 +617,8 @@
                                         <strong>Invoice PO-2026-0047</strong>
                                         <span class="portal-doc__meta">Generated Feb 28, 2026 · PDF</span>
                                     </div>
-                                    <a href="javascript:void(0)" onclick="alert('Sample download initiated.')"
-                                        class="btn btn--tertiary btn--sm">Download</a>
+                                    <a href="javascript:void(0)"
+                                        class="btn btn--tertiary btn--sm portal-download-demo">Download</a>
                                 </div>
                             </div>
                             <button class="btn btn--secondary btn--sm" style="margin-top:var(--space-6);">+
@@ -745,6 +738,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1"
         integrity="sha384-Sm2s7OXxsAMTyJ4iIyRBgVpeGUvMPk2lRQnnZhE78Wej7oggIoolKt+SCt0XJbUB"
         crossorigin="anonymous"></script>
+    <script src="/js/portal.js"></script>
     <script type="module" src="/js/analytics.js"></script>
 </body>
 
