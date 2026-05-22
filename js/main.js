@@ -106,6 +106,18 @@ function initModals() {
 
                 const subjectField = modal.querySelector('[name="subject"]');
                 if (subjectField) subjectField.value = prefill;
+                
+                const modalTitle = modal.querySelector('.modal__title');
+                if (modalTitle) modalTitle.textContent = prefill;
+                
+                const messageField = modal.querySelector('[name="message"]');
+                if (messageField) {
+                    if (prefill === 'Brand Permission Request') {
+                        messageField.value = 'I would like to request brand permission information for SurgeRoot.';
+                    } else {
+                        messageField.value = 'I would like to request distributor references for SurgeRoot.';
+                    }
+                }
             }
 
             // Focus first input
